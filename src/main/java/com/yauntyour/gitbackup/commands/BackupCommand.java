@@ -134,26 +134,25 @@ public class BackupCommand {
             return true;
         }
 
-        String commitHash = args[1];
-
         // 确认操作
         sender.sendMessage(ChatColor.RED + "警告: 这将覆盖当前世界数据!");
-        sender.sendMessage(ChatColor.RED + "输入 '/gitbackup restore confirm " + commitHash + "' 确认恢复");
+        sender.sendMessage(ChatColor.RED + "输入 '/gitbackup restore confirm <commit-hash>' 确认恢复");
 
-        if (args.length > 2 && "confirm".equalsIgnoreCase(args[2])) {
-            sender.sendMessage(ChatColor.YELLOW + "开始恢复备份...");
-
-            // 异步执行恢复
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        if (args.length >= 3) {
+            String commitHash = args[2];
+            sender.sendMessage(ChatColor.YELLOW + "Backup to the commit-hash: " + commitHash);
+            // 同步执行恢复
+            try {
                 boolean success = gitManager.restoreBackup(commitHash);
                 if (success) {
                     sender.sendMessage(ChatColor.GREEN + "备份恢复成功! 请重启服务器使更改生效");
                 } else {
                     sender.sendMessage(ChatColor.RED + "备份恢复失败，请查看控制台获取详细信息");
                 }
-            });
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-
         return true;
     }
 
@@ -192,16 +191,13 @@ public class BackupCommand {
         }
 
         sender.sendMessage(ChatColor.YELLOW + "初始化Git仓库...");
+        boolean success = gitManager.initRepo();
+        if (success) {
+            sender.sendMessage(ChatColor.GREEN + "Git仓库初始化成功!");
+        } else {
+            sender.sendMessage(ChatColor.RED + "Git仓库初始化失败，请查看控制台获取详细信息");
+        }
 
-        // 异步执行初始化
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            boolean success = gitManager.initRepo();
-            if (success) {
-                sender.sendMessage(ChatColor.GREEN + "Git仓库初始化成功!");
-            } else {
-                sender.sendMessage(ChatColor.RED + "Git仓库初始化失败，请查看控制台获取详细信息");
-            }
-        });
 
         return true;
     }
