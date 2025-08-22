@@ -25,3 +25,19 @@
 3. 编辑config.yml配置Git仓库路径和其他设置
 4. 如果是新仓库，需要初始化：`/gitbackup init`
 5. 如果是现有仓库，确保正确配置远程URL
+
+## 使用示例
+
+```
+# 创建即时备份
+/gitbackup now "日常备份"
+
+# 查看最近备份
+/gitbackup list
+
+# 恢复到特定备份
+/gitbackup restore a1b2c3d
+
+# 查看状态
+/gitbackup status
+```
