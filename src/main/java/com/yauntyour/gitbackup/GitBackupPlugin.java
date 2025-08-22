@@ -28,8 +28,8 @@ public class GitBackupPlugin extends JavaPlugin {
         // 初始化备份调度器
         backupScheduler = new BackupScheduler(this);
         backupScheduler.startScheduledBackups();
-
         getLogger().info("GitBackup插件已启用!");
+        gitManager.initRepo();
     }
 
     @Override
