@@ -59,17 +59,14 @@ public class BackupCommand {
             }
         }
 
-        final String msg = message;
         sender.sendMessage(ChatColor.YELLOW + "开始创建备份...");
-        // 异步执行备份
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            boolean success = gitManager.commitChanges(msg);
-            if (success) {
-                sender.sendMessage(ChatColor.GREEN + "备份创建成功!");
-            } else {
-                sender.sendMessage(ChatColor.RED + "备份创建失败，请查看控制台获取详细信息");
-            }
-        });
+        // 同步执行备份
+        boolean success = gitManager.commitChanges(message);
+        if (success) {
+            sender.sendMessage(ChatColor.GREEN + "备份创建成功!");
+        } else {
+            sender.sendMessage(ChatColor.RED + "备份创建失败，请查看控制台获取详细信息");
+        }
 
         return true;
     }
@@ -96,37 +93,32 @@ public class BackupCommand {
 
         sender.sendMessage(ChatColor.YELLOW + "获取备份列表...");
 
-        int p = page;
-        // 异步获取备份列表
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            int f_page = p;
-            List<String> history = gitManager.getBackupHistory();
+        List<String> history = gitManager.getBackupHistory();
 
-            if (history.isEmpty()) {
-                sender.sendMessage(ChatColor.YELLOW + "没有找到备份记录");
-                return;
-            }
+        if (history.isEmpty()) {
+            sender.sendMessage(ChatColor.YELLOW + "没有找到备份记录");
+        }
 
-            int itemsPerPage = 10;
-            int totalPages = (int) Math.ceil((double) history.size() / itemsPerPage);
+        int itemsPerPage = 10;
+        int totalPages = (int) Math.ceil((double) history.size() / itemsPerPage);
 
-            if (f_page > totalPages) {
-                f_page = totalPages;
-            }
+        if (page > totalPages) {
+            page = totalPages;
+        }
 
-            int start = (f_page - 1) * itemsPerPage;
-            int end = Math.min(start + itemsPerPage, history.size());
+        int start = (page - 1) * itemsPerPage;
+        int end = Math.min(start + itemsPerPage, history.size());
 
-            sender.sendMessage(ChatColor.GOLD + "=== 备份列表 (第 " + f_page + " 页 / 共 " + totalPages + " 页) ===");
+        sender.sendMessage(ChatColor.GOLD + "=== 备份列表 (第 " + page + " 页 / 共 " + totalPages + " 页) ===");
 
-            for (int i = start; i < end; i++) {
-                sender.sendMessage(ChatColor.GREEN + "[" + (i + 1) + "] " + ChatColor.WHITE + history.get(i));
-            }
+        for (int i = start; i < end; i++) {
+            sender.sendMessage(ChatColor.GREEN + "[" + (i + 1) + "] " + ChatColor.WHITE + history.get(i));
+        }
 
-            if (f_page < totalPages) {
-                sender.sendMessage(ChatColor.YELLOW + "使用 '/gitbackup list " + (f_page + 1) + "' 查看下一页");
-            }
-        });
+        if (page < totalPages) {
+            sender.sendMessage(ChatColor.YELLOW + "使用 '/gitbackup list " + (page + 1) + "' 查看下一页");
+        }
+
 
         return true;
     }
