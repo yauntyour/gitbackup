@@ -1,0 +1,33 @@
+name: GitBackupPlugin
+version: '1.0-SNAPSHOT'
+main: com.yauntyour.gitbackup.GitBackupPlugin
+api-version: '1.21'
+authors: [Yauntyours]
+description: 通过 Git 备份服务器世界存档
+
+
+commands:
+  gitbackup:
+    description: Manage Git backups
+    usage: /<command> [now|list|restore|status|reload|init]
+    aliases: [gbackup, gb]
+
+permissions:
+  gitbackup.use:
+    description: Allows using basic gitbackup commands
+    default: op
+  gitbackup.now:
+    description: Allows creating immediate backups
+    default: op
+  gitbackup.restore:
+    description: Allows restoring backups
+    default: op
+  gitbackup.reload:
+    description: Allows reloading configuration
+    default: op
+  gitbackup.list:
+    description: Allows viewing backup list
+    default: op
+  gitbackup.init:
+    description: Allows initializing git repository
+    default: op

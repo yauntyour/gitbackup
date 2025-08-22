@@ -1,0 +1,33 @@
+# Git配置
+git:
+  # 仓库路径（相对服务器目录或绝对路径）
+  repository-path: "backups"
+  # 远程仓库URL（可选，用于推送到远程）
+  remote-url: ""
+  # 分支名称
+  branch: "main"
+  # Git用户配置
+  user:
+    name: "Minecraft Server"
+    email: "server@example.com"
+
+# 备份配置
+backup:
+  # 自动备份间隔（分钟），0表示禁用
+  interval: 60
+  # 要备份的世界列表
+  worlds:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+  # 排除的文件/文件夹模式
+  excludes:
+    - "*/session.lock"
+    - "*/uid.dat"
+    - "*/playerdata/*.tmp"
+    - "*/data/*.tmp"
+
+  # 最大备份数量（0表示无限制）
+  max-backups: 50
+  # 备份前是否强制保存世界
+  save-world: true
