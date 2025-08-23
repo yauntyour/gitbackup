@@ -4,13 +4,10 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.lib.RepositoryBuilder;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.eclipse.jgit.treewalk.FileTreeIterator;
-import org.eclipse.jgit.treewalk.filter.PathFilter;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -20,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
